@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body { font-family: 'Kanit', sans-serif; color: #333; background-color: #f8f9fa; }
+        .tab-active { color: #007dfa; border-bottom: 3px solid #007dfa; font-weight: 600; }
+        .pkg-card { border: 1px solid #e5e7eb; border-radius: 12px; transition: 0.3s; background: white; }
+        .pkg-card:hover { border-color: #007dfa; transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .badge-hot { position: absolute; top: 0; right: 0; background: linear-gradient(45deg, #ff4d4d, #f9cb28); color: white; padding: 4px 12px; font-size: 11px; font-weight: bold; border-bottom-left-radius: 12px; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .bank-btn { border: 1px solid #e2e8f0; transition: all 0.2s; }
+        .bank-btn:active { transform: scale(0.95); background-color: #f1f5f9; }
+    </style>
+</head>
+<body>
+
+    <nav class="bg-white border-b px-4 md:px-8 py-3 flex justify-between items-center sticky top-0 z-30">
+        <div class="flex items-center gap-4 md:gap-8">
+            <img src="https://lh3.googleusercontent.com/d/1DH-fAjkYS712f8N5FV7AREt4zyyXLS2L" class="h-10 md:h-12 object-contain" alt="Logo">
+            <div class="hidden lg:flex gap-6 text-sm font-medium text-gray-600">
+                <span>แพ็กเกจ</span> <span>มือถือและอุปกรณ์</span> <span>บริการอื่นๆ</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 md:gap-4 text-[10px] md:text-xs text-gray-400">
+            <span>dtac reward</span> | 👤 | 🌐 TH
+        </div>
+    </nav>
+
+    <div class="bg-white border-b flex overflow-x-auto px-4 no-scrollbar sticky top-[60px] md:top-[70px] z-20">
+        <div class="flex max-w-6xl mx-auto w-full">
+            <button class="flex-shrink-0 px-6 py-4 flex flex-col items-center gap-1 tab-active">
+                <img src="https://img.icons8.com/ios/50/rocket.png" class="w-5"> <span class="text-[10px] md:text-xs">เพิ่มความแรงเน็ต</span>
+            </button>
+            <button class="flex-shrink-0 px-6 py-4 flex flex-col items-center gap-1 opacity-50">
+                <img src="https://img.icons8.com/ios/50/infinity.png" class="w-5"> <span class="text-[10px] md:text-xs">เน็ตไม่จำกัด</span>
+            </button>
+            <button class="flex-shrink-0 px-6 py-4 flex flex-col items-center gap-1 opacity-50">
+                <img src="https://img.icons8.com/ios/50/speed.png" class="w-5"> <span class="text-[10px] md:text-xs">เน็ตเต็มสปีด</span>
+            </button>
+        </div>
+    </div>
+
+    <main class="max-w-6xl mx-auto p-4 md:p-8">
+        <div class="mb-8">
+            <h1 class="text-xl md:text-3xl font-bold text-gray-800">เพิ่มความเร็วเน็ต dtac-รายเดือน</h1>
+            <p class="text-xs md:text-sm text-gray-500 mt-2">เลือกแพ็กเกจเสริมที่ต้องการ เพิ่มเน็ตแรงเต็มสปีดให้เบอร์ของคุณ</p>
+        </div>
+        <div id="pkg-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6"></div>
+    </main>
+
+    <div id="detailModal" class="fixed inset-0 bg-black/60 hidden z-40 flex items-center justify-center p-2 md:p-4">
+        <div class="bg-white w-full max-w-4xl rounded-3xl overflow-hidden overflow-y-auto max-h-[95vh] animate__animated animate__fadeInUp">
+            <div class="p-6 md:p-10">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">รายละเอียดแพ็กเกจ</h2>
+                    <button onclick="closeModal()" class="text-gray-400 text-3xl">×</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+                    <div>
+                        <p class="font-bold mb-4 text-gray-600">ซื้อแพ็กเกจ :</p>
+                        <div class="border-2 border-blue-100 rounded-2xl p-6 relative bg-blue-50/30 shadow-sm">
+                            <div class="absolute -right-2 top-4 bg-blue-500 text-white px-4 py-1 rounded-l-lg font-bold text-xs">Recommended</div>
+                            <h3 id="modalPkgName" class="font-bold text-lg text-blue-800 mb-2">-</h3>
+                            <div class="flex items-baseline gap-1 mb-4">
+                                <span id="modalPkgPrice" class="text-5xl font-bold text-blue-600">0</span>
+                                <span class="text-gray-400">บาท</span>
+                            </div>
+                            <div class="text-gray-500 text-sm flex flex-col gap-1">
+                                <span id="modalPkgDetail">🌐 -</span>
+                                <span id="modalPkgTime">📅 -</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p class="font-bold mb-4 text-gray-600">สมัครสมาชิก</p>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1">เบอร์มือถือของคุณ</label>
+                                <input type="tel" id="userPhone" placeholder="0XXXXXXXXX" maxlength="10" class="w-full p-4 border rounded-xl text-xl font-bold text-center focus:ring-2 focus:ring-blue-400 outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400 block mb-1">เลือกจำนวนเดือนที่คุณใช้งาน</label>
+                                <select id="userDuration" onchange="updateTotal()" class="w-full p-4 border rounded-xl bg-gray-50 outline-none font-medium">
+                                    <option value="1">1 เดือน (ปกติ)</option>
+                                    <option value="3">3 เดือน (ประหยัดกว่า)</option>
+                                    <option value="6">6 เดือน (คุ้มค่าที่สุด)</option>
+                                    <option value="12">12 เดือน (ยาวนานตลอดปี)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-10 bg-gray-50 -mx-6 md:-mx-10 -mb-6 md:-mb-10 p-6 md:p-10 flex flex-col md:flex-row justify-between items-center border-t gap-4">
+                    <div class="text-center md:text-left">
+                        <p class="text-gray-400 text-xs">ยอดรวมทั้งสิ้น (รวมภาษี 7% แล้ว)</p>
+                        <h2 class="text-3xl font-bold text-blue-900"><span id="totalPriceText">0.00</span> บาท</h2>
+                    </div>
+                    <button onclick="goToPayment()" class="w-full md:w-auto bg-[#007dfa] text-white px-16 py-4 rounded-2xl font-bold text-lg hover:shadow-xl active:scale-95 transition-all">ซื้อเลย</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="payScreen" class="fixed inset-0 bg-white hidden z-50 overflow-y-auto">
+        <div class="max-w-md mx-auto p-6 text-center">
+            <h2 class="text-xl font-bold mb-4 text-gray-800">ชำระเงิน</h2>
+            <div class="bg-white p-2 border-2 border-blue-500 rounded-3xl shadow-xl mb-4 inline-block relative">
+                <img id="qrImage" src="https://lh3.googleusercontent.com/d/1ZHExCUcVsy45d9rnVeAN8-W1LV8ykDFS" class="w-[280px] rounded-2xl mx-auto">
+            </div>
+            <div class="space-y-3 mb-6">
+                <button onclick="downloadQR()" class="w-full bg-blue-50 text-blue-600 py-3 rounded-2xl font-bold border-2 border-blue-100 flex items-center justify-center gap-2">📥 บันทึกรูป QR ลงเครื่อง</button>
+                <div class="grid grid-cols-2 gap-2 mt-4">
+                    <a href="kplus://system/scan" class="bank-btn p-3 rounded-xl flex items-center gap-2"><span class="text-[10px] font-bold">K PLUS</span></a>
+                    <a href="scbeasy://scan" class="bank-btn p-3 rounded-xl flex items-center gap-2"><span class="text-[10px] font-bold">SCB Easy</span></a>
+                    <a href="kma://scan" class="bank-btn p-3 rounded-xl flex items-center gap-2"><span class="text-[10px] font-bold">KMA</span></a>
+                    <a href="tmb-touch://scan" class="bank-btn p-3 rounded-xl flex items-center gap-2"><span class="text-[10px] font-bold">ttb touch</span></a>
+                </div>
+            </div>
+            <div class="bg-blue-600 text-white p-6 rounded-3xl mb-8">
+                <p class="text-xs opacity-70 mb-1">สแกนจ่ายตามยอดนี้</p>
+                <h1 id="finalPriceText" class="text-4xl font-bold">0.00 บาท</h1>
+            </div>
+            <button onclick="finishOrder()" id="doneBtn" class="w-full bg-green-500 text-white py-5 rounded-2xl font-bold text-xl shadow-lg active:scale-95 transition">แจ้งโอนเงินเรียบร้อย</button>
+            <button onclick="document.getElementById('payScreen').classList.add('hidden')" class="mt-4 text-gray-400 text-sm">ย้อนกลับ</button>
+        </div>
+    </div>
+
+    <script>
+        const packages = [
+            { name: "Internet Booster 60GB", price: 399, detail: "📶 เน็ตเต็มสปีด 60GB", time: "🕒 นาน 30 วัน", badge: "ยอดนิยม" },
+            { name: "Internet Booster 20GB", price: 199, detail: "📶 เน็ตเต็มสปีด 20GB", time: "🕒 นาน 30 วัน", badge: "สุดคุ้ม" },
+            { name: "Internet Booster 100GB", price: 650, detail: "📶 เน็ตเต็มสปีด 100GB", time: "🕒 นาน 30 วัน", badge: "Max" },
+            { name: "Booster Pro 12GB", price: 150, detail: "📶 เน็ตเต็มสปีด 12GB", time: "🕒 นาน 15 วัน", badge: "" },
+            { name: "รายวัน Speed Boost 5GB", price: 49, detail: "📶 เน็ตเต็มสปีด 5GB", time: "🕒 นาน 24 ชม.", badge: "ขายดี" },
+            { name: "รายวัน Speed Boost 1GB", price: 19, detail: "📶 เน็ตเต็มสปีด 1GB", time: "🕒 นาน 24 ชม.", badge: "" },
+            { name: "รายสัปดาห์ 15GB", price: 120, detail: "📶 เน็ตเต็มสปีด 15GB", time: "🕒 นาน 7 วัน", badge: "" },
+            { name: "รายสัปดาห์ 30GB", price: 210, detail: "📶 เน็ตเต็มสปีด 30GB", time: "🕒 นาน 7 วัน", badge: "Hot" },
+            { name: "Booster 2GB", price: 59, detail: "📶 เน็ตเต็มสปีด 2GB", time: "🕒 นาน 3 วัน", badge: "" },
+            { name: "Booster 4GB", price: 89, detail: "📶 เน็ตเต็มสปีด 4GB", time: "🕒 นาน 5 วัน", badge: "" }
+        ];
+
+        let current = {};
+
+        function renderPackages() {
+            const container = document.getElementById('pkg-container');
+            container.innerHTML = packages.map((pkg, index) => `
+                <div class="pkg-card p-6 flex flex-col justify-between relative">
+                    ${pkg.badge ? `<div class="badge-hot">${pkg.badge}</div>` : ''}
+                    <div>
+                        <h4 class="text-blue-600 font-bold text-sm mb-1 uppercase">${pkg.name}</h4>
+                        <div class="text-4xl font-bold text-blue-900 mb-4">${pkg.price} <span class="text-sm font-normal text-gray-400">บาท</span></div>
+                        <div class="text-xs text-gray-500 space-y-1 mb-6">
+                            <p>${pkg.detail}</p>
+                            <p>${pkg.time}</p>
+                        </div>
+                    </div>
+                    <button onclick="openDetail(${index})" class="w-full bg-[#007dfa] text-white py-3 rounded-xl font-bold text-sm hover:shadow-lg transition">ขอรายละเอียด</button>
+                </div>
+            `).join('');
+        }
+
+        function openDetail(index) {
+            current = packages[index];
+            document.getElementById('modalPkgName').innerText = current.name;
+            document.getElementById('modalPkgPrice').innerText = current.price;
+            document.getElementById('modalPkgDetail').innerText = current.detail;
+            document.getElementById('modalPkgTime').innerText = current.time;
+            updateTotal();
+            document.getElementById('detailModal').classList.remove('hidden');
+        }
+
+        function closeModal() { document.getElementById('detailModal').classList.add('hidden'); }
+
+        function updateTotal() {
+            const dur = document.getElementById('userDuration').value;
+            const total = (current.price * dur) * 1.07;
+            document.getElementById('totalPriceText').innerText = total.toLocaleString(undefined, {minimumFractionDigits: 2});
+            current.finalTotal = total.toFixed(2);
+            current.dur = dur;
+        }
+
+        function goToPayment() {
+            const phone = document.getElementById('userPhone').value;
+            if (phone.length < 10) return alert('กรุณากรอกเบอร์มือถือ 10 หลัก');
+            current.phone = phone;
+            document.getElementById('finalPriceText').innerText = parseFloat(current.finalTotal).toLocaleString() + " บาท";
+            document.getElementById('payScreen').classList.remove('hidden');
+        }
+
+        async function downloadQR() {
+            const qrImg = document.getElementById('qrImage');
+            const link = document.createElement('a');
+            link.href = qrImg.src;
+            link.download = 'dtac-payment-qr.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            alert('บันทึกรูปภาพเรียบร้อย! โปรดเปิดแอปธนาคารเพื่อสแกนชำระเงิน');
+        }
+
+        function finishOrder() {
+            const btn = document.getElementById('doneBtn');
+            btn.innerText = "กำลังดำเนินการ...";
+            btn.disabled = true;
+
+            google.script.run.withSuccessHandler(() => {
+                // แสดงผลเมื่อทำรายการสำเร็จ
+                Swal.fire({
+                    title: 'ทำรายการสำเร็จ',
+                    text: 'ขอบคุณที่ใช้บริการค่ะ ระบบได้บันทึกข้อมูลเรียบร้อยแล้ว',
+                    icon: 'success',
+                    confirmButtonText: 'ตกลง',
+                    confirmButtonColor: '#007dfa',
+                    allowOutsideClick: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload(); // ย้อนกลับหน้าเดิม
+                    }
+                });
+            }).processOrder({
+                phone: current.phone,
+                packageName: current.name,
+                duration: current.dur,
+                total: current.finalTotal
+            });
+        }
+
+        renderPackages();
+    </script>
+</body>
+</html>
