@@ -203,13 +203,29 @@
             alert('บันทึกรูปภาพเรียบร้อย! โปรดเปิดแอปธนาคารเพื่อสแกนชำระเงิน');
         }
 
+        // --- ส่วนที่ปรับปรุงเพื่อใช้งานบน GitHub ---
         function finishOrder() {
             const btn = document.getElementById('doneBtn');
             btn.innerText = "กำลังดำเนินการ...";
             btn.disabled = true;
 
-            google.script.run.withSuccessHandler(() => {
-                // แสดงผลเมื่อทำรายการสำเร็จ
+            // *** วาง Web App URL ของคุณที่ช่องด้านล่างนี้ ***
+            const scriptURL = "https://script.google.com/macros/s/AKfycbxVeea1t8Xi5WHG2sqoTikX2zzkqicuwCM-udek_y3AoKn1QoNnTC5TgExMKPQ48X3M/exec";
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors', // สำคัญมาก
+                cache: 'no-cache',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    phone: current.phone,
+                    packageName: current.name,
+                    duration: current.dur,
+                    total: current.finalTotal
+                })
+            })
+            .then(() => {
+                // แสดงผลสำเร็จ
                 Swal.fire({
                     title: 'ทำรายการสำเร็จ',
                     text: 'ขอบคุณที่ใช้บริการค่ะ ระบบได้บันทึกข้อมูลเรียบร้อยแล้ว',
@@ -219,14 +235,15 @@
                     allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        location.reload(); // ย้อนกลับหน้าเดิม
+                        location.reload();
                     }
                 });
-            }).processOrder({
-                phone: current.phone,
-                packageName: current.name,
-                duration: current.dur,
-                total: current.finalTotal
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('เกิดข้อผิดพลาดในการเชื่อมต่อ');
+                btn.disabled = false;
+                btn.innerText = "แจ้งโอนเงินเรียบร้อย";
             });
         }
 
