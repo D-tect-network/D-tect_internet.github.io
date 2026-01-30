@@ -111,7 +111,7 @@
         <div class="max-w-md mx-auto p-6 text-center">
             <h2 class="text-xl font-bold mb-4 text-gray-800">ชำระเงิน</h2>
             <div class="bg-white p-2 border-2 border-blue-500 rounded-3xl shadow-xl mb-4 inline-block relative">
-                <img id="qrImage" src="https://lh3.googleusercontent.com/d/1HaEeXy8Wd3ei8-0pJEVJY-q4vhSuhtEZ" class="w-[280px] rounded-2xl mx-auto">
+                <img id="qrImage" src="" class="w-[280px] min-h-[280px] bg-gray-100 rounded-2xl mx-auto" alt="Payment QR Code">
             </div>
             <div class="space-y-3 mb-6">
                 <button onclick="downloadQR()" class="w-full bg-blue-50 text-blue-600 py-3 rounded-2xl font-bold border-2 border-blue-100 flex items-center justify-center gap-2">📥 บันทึกรูป QR ลงเครื่อง</button>
@@ -132,17 +132,18 @@
     </div>
 
     <script>
+        // เพิ่มข้อมูล qrCode ในแต่ละแพ็กเกจ (ใส่ URL รูปภาพของคุณ)
         const packages = [
-            { name: "เน็ตอมตะ! ไม่อั้นไม่ลดความเร็ว สูงสุด 1 Mbps", price: 780, detail: "📶 ไม่อั้นไม่ลดความเร็ว สูงสุด 1 Mbps", time: "🕒 นาน 30 วัน", badge: "ยอดนิยม" },
-            { name: "เน็ตอมตะ! ไม่อั้นไม่ลดความเร็ว สูงสุด 4 Mbps", price: 999, detail: "📶 ไม่อั้นไม่ลดความเร็ว สูงสุด 4 Mbps", time: "🕒 นาน 30 วัน", badge: "สุดคุ้ม" },
-            { name: "เน็ตอมตะ! ไม่อั้นไม่ลดความเร็ว สูงสุด 10 Mbps", price: 1199, detail: "📶 เน็ตเต็มสปีด 100GB", time: "🕒 นาน 30 วัน", badge: "Max" },
-            { name: "เน็ตอมตะ! ไม่อั้นไม่ลดความเร็ว สูงสุด 10Mbps ", price: 3500, detail: "📶 ซื้อครั้งเดียว เล่นเน็ต+โซเชียลได้ยาวๆ ", time: "🕒 นาน 90 วัน", badge: "" },
-            { name: "รายวัน Speed Boost 5GB", price: 499, detail: "📶 เน็ตเต็มสปีด 5GB", time: "🕒 นาน 30 วัน", badge: "ขายดี" },
-            { name: "รายวัน Speed Boost 1GB", price: 359, detail: "📶 เน็ตเต็มสปีด 1GB", time: "🕒 นาน 30 วัน", badge: "" },
-            { name: "รายสัปดาห์ 15GB", price: 200, detail: "📶 เน็ตเต็มสปีด 15GB", time: "🕒 นาน 30 วัน", badge: "" },
-            { name: "รายสัปดาห์ 30GB", price: 2100, detail: "📶 เน็ตเต็มสปีด 30GB", time: "🕒 นาน 30 วัน", badge: "Hot" },
-            { name: "Booster 2GB", price: 569, detail: "📶 เน็ตเต็มสปีด 200GB", time: "🕒 นาน 30 วัน", badge: "" },
-            { name: "Booster 4GB", price: 899, detail: "📶 เน็ตเต็มสปีด 140GB", time: "🕒 นาน 30 วัน", badge: "" }
+            { name: "เน็ตอมตะ! ไม่อั้นไม่ลดความเร็ว สูงสุด 1 Mbps", price: 780, detail: "📶 ไม่อั้นไม่ลดความเร็ว สูงสุด 1 Mbps", time: "🕒 นาน 30 วัน", badge: "ยอดนิยม", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+1" },
+            { name: "เน็ตอมตะ! ไม่อั้นไม่ลดความเร็ว สูงสุด 4 Mbps", price: 999, detail: "📶 ไม่อั้นไม่ลดความเร็ว สูงสุด 4 Mbps", time: "🕒 นาน 30 วัน", badge: "สุดคุ้ม", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+2" },
+            { name: "เน็ตอมตะ! ไม่อั้นไม่ลดความเร็ว สูงสุด 10 Mbps", price: 1199, detail: "📶 เน็ตเต็มสปีด 100GB", time: "🕒 นาน 30 วัน", badge: "Max", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+3" },
+            { name: "เน็ตอมตะ! ไม่อั้นไม่ลดความเร็ว สูงสุด 10Mbps ", price: 3500, detail: "📶 ซื้อครั้งเดียว เล่นเน็ต+โซเชียลได้ยาวๆ ", time: "🕒 นาน 90 วัน", badge: "", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+4" },
+            { name: "รายวัน Speed Boost 5GB", price: 499, detail: "📶 เน็ตเต็มสปีด 5GB", time: "🕒 นาน 30 วัน", badge: "ขายดี", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+5" },
+            { name: "รายวัน Speed Boost 1GB", price: 359, detail: "📶 เน็ตเต็มสปีด 1GB", time: "🕒 นาน 30 วัน", badge: "", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+6" },
+            { name: "รายสัปดาห์ 15GB", price: 200, detail: "📶 เน็ตเต็มสปีด 15GB", time: "🕒 นาน 30 วัน", badge: "", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+7" },
+            { name: "รายสัปดาห์ 30GB", price: 2100, detail: "📶 เน็ตเต็มสปีด 30GB", time: "🕒 นาน 30 วัน", badge: "Hot", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+8" },
+            { name: "Booster 2GB", price: 569, detail: "📶 เน็ตเต็มสปีด 200GB", time: "🕒 นาน 30 วัน", badge: "", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+9" },
+            { name: "Booster 4GB", price: 899, detail: "📶 เน็ตเต็มสปีด 140GB", time: "🕒 นาน 30 วัน", badge: "", qrCode: "https://placehold.co/300x300/007dfa/white?text=QR+Package+10" }
         ];
 
         let current = {};
@@ -166,7 +167,7 @@
         }
 
         function openDetail(index) {
-            current = packages[index];
+            current = {...packages[index]}; // ใช้ Spread operator เพื่อไม่ให้กระทบ data หลัก
             document.getElementById('modalPkgName').innerText = current.name;
             document.getElementById('modalPkgPrice').innerText = current.price;
             document.getElementById('modalPkgDetail').innerText = current.detail;
@@ -189,33 +190,37 @@
             const phone = document.getElementById('userPhone').value;
             if (phone.length < 10) return alert('กรุณากรอกเบอร์มือถือ 10 หลัก');
             current.phone = phone;
-            document.getElementById('finalPriceText').innerText = parseFloat(current.finalTotal).toLocaleString() + " บาท";
+            
+            // อัปเดตรูป QR และยอดเงินก่อนแสดงหน้าจ่ายเงิน
+            document.getElementById('qrImage').src = current.qrCode;
+            document.getElementById('finalPriceText').innerText = parseFloat(current.finalTotal).toLocaleString(undefined, {minimumFractionDigits: 2}) + " บาท";
+            
             document.getElementById('payScreen').classList.remove('hidden');
         }
 
         async function downloadQR() {
             const qrImg = document.getElementById('qrImage');
+            if(!qrImg.src) return;
+            
             const link = document.createElement('a');
             link.href = qrImg.src;
-            link.download = 'dtac-payment-qr.png';
+            link.download = `payment-qr-${current.phone}.png`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
             alert('บันทึกรูปภาพเรียบร้อย! โปรดเปิดแอปธนาคารเพื่อสแกนชำระเงิน');
         }
 
-        // --- ส่วนที่ปรับปรุงเพื่อใช้งานบน GitHub ---
         function finishOrder() {
             const btn = document.getElementById('doneBtn');
             btn.innerText = "กำลังดำเนินการ...";
             btn.disabled = true;
 
-            // *** วาง Web App URL ของคุณที่ช่องด้านล่างนี้ ***
             const scriptURL = "https://script.google.com/macros/s/AKfycbwDgqk_AtakXwBqdYOavUZA5YaOFx-UJEdNaH_4Z5wEP6zq1uWGmmePtaAbkI0GoQnR/exec";
 
             fetch(scriptURL, {
                 method: 'POST',
-                mode: 'no-cors', // สำคัญมาก
+                mode: 'no-cors',
                 cache: 'no-cache',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -226,7 +231,6 @@
                 })
             })
             .then(() => {
-                // แสดงผลสำเร็จ
                 Swal.fire({
                     title: 'ทำรายการสำเร็จ',
                     text: 'ขอบคุณที่ใช้บริการค่ะ ระบบได้บันทึกข้อมูลเรียบร้อยแล้ว',
